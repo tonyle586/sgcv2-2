@@ -27,7 +27,7 @@ const Contact: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwvCBdwprAzVTnPi_7lmsKyeK2dQupecvSmdT5hHbSTmIaWC-545GBAsb8xMNGgUXtVWQ/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyb-6gGi6hVKoLJzmD4IA6zvNThWtzfRpMnpg5JatsyZDkZ7l42U-nlcBCEP6xd0A9tGg/exec';
     const form = e.currentTarget;
     const formData = new FormData(form);
 
@@ -95,6 +95,7 @@ const Contact: React.FC = () => {
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">{t.contact.formTitle}</h2>
             
             <form id="my-landing-form" onSubmit={handleSubmit} className="space-y-6">
+              <input type="hidden" name="page_url" defaultValue={window.location.href} />
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {t.common.name} <span className="text-red-500">*</span>
