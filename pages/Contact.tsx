@@ -11,27 +11,36 @@ const Contact: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // Form State
-  const [message, setMessage] = useState('');
+  // Pre-fill message based on service selection
+  const [defaultMessage, setDefaultMessage] = useState('');
 
   useEffect(() => {
     const service = searchParams.get('service');
     if (service) {
-      setMessage(language === 'vn' 
+      setDefaultMessage(language === 'vn' 
         ? `Tôi muốn nhận tư vấn về dịch vụ: ${service}` 
         : `I am interested in the service: ${service}`);
     }
   }, [searchParams, language]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    navigate('/thank-you');
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwvCBdwprAzVTnPi_7lmsKyeK2dQupecvSmdT5hHbSTmIaWC-545GBAsb8xMNGgUXtVWQ/exec';
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    fetch(scriptURL, { method: 'POST', body: formData })
+      .then(response => {
+        // Google Apps Script usually returns a redirect or simple 200.
+        // We assume success if fetch completes without network error.
+        navigate('/thank-you');
+      })
+      .catch(error => {
+        alert('Lỗi: ' + error.message);
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -41,7 +50,6 @@ const Contact: React.FC = () => {
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t.contact.title}</h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">{t.contact.subtitle}</p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Info & Map */}
           <div className="space-y-8">
@@ -86,16 +94,17 @@ const Contact: React.FC = () => {
           <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">{t.contact.formTitle}</h2>
             
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form id="my-landing-form" onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {t.common.name} <span className="text-red-500">*</span>
                 </label>
                 <input 
                   type="text" 
+                  name="Full Name"
                   required
+                  placeholder={language === 'vn' ? "Họ tên" : "Full Name"}
                   className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-brand-500 outline-none transition-all dark:text-white"
-                  placeholder="Nguyen Van A"
                 />
               </div>
 
@@ -105,10 +114,11 @@ const Contact: React.FC = () => {
                     {t.common.email} <span className="text-red-500">*</span>
                   </label>
                   <input 
-                    type="email" 
+                    type="email"
+                    name="Email" 
                     required
+                    placeholder="Email"
                     className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-brand-500 outline-none transition-all dark:text-white"
-                    placeholder="email@company.com"
                   />
                 </div>
                 <div>
@@ -117,8 +127,9 @@ const Contact: React.FC = () => {
                   </label>
                   <input 
                     type="tel" 
+                    name="Phone Number"
+                    placeholder={language === 'vn' ? "Số điện thoại" : "Phone Number"}
                     className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-brand-500 outline-none transition-all dark:text-white"
-                    placeholder="(+84) ..."
                   />
                 </div>
               </div>
@@ -128,27 +139,29 @@ const Contact: React.FC = () => {
                   {t.common.message} <span className="text-red-500">*</span>
                 </label>
                 <textarea 
+                  name="How can we help?"
                   required
                   rows={4}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                  defaultValue={defaultMessage}
+                  placeholder={language === 'vn' ? "Nội Dung Cần Tư Vấn" : "How can we help?"}
                   className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-brand-500 outline-none transition-all dark:text-white resize-none"
                 ></textarea>
               </div>
 
               <button 
                 type="submit" 
+                id="submitBtn"
                 disabled={isSubmitting}
                 className="w-full py-4 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg shadow-lg shadow-brand-500/30 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="animate-spin" size={24} />
-                    {t.common.sending}
+                    {language === 'vn' ? 'Đang xử lý...' : 'Processing...'}
                   </>
                 ) : (
                   <>
-                    {t.common.sendMessage}
+                    {language === 'vn' ? 'Gửi Ngay' : 'Send Now'}
                     <Send size={20} />
                   </>
                 )}

@@ -20,6 +20,30 @@ const Layout: React.FC = () => {
     { path: '/contact', label: t.nav.contact },
   ];
 
+  // Reusable Logo Component
+  const Logo = ({ className = "" }: { className?: string }) => (
+    <div className={`flex items-center gap-2.5 group ${className}`}>
+      {/* Logo Mark */}
+      <div className="relative flex items-center justify-center w-10 h-10 bg-gradient-to-br from-brand-600 to-brand-700 rounded-lg shadow-lg shadow-brand-600/20 group-hover:scale-105 transition-transform duration-300">
+        <div className="absolute inset-0 bg-white/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6 text-white" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M7 20l10-16" />
+          <path d="M6 6l4-4" />
+          <path d="M18 18l-4 4" />
+        </svg>
+      </div>
+      {/* Text */}
+      <div className="flex flex-col">
+        <span className="text-2xl font-black tracking-tight text-gray-900 dark:text-white leading-none group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+          SGC
+        </span>
+        <span className="text-[0.65rem] font-bold tracking-[0.25em] text-gray-500 dark:text-gray-400 uppercase leading-none mt-1 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors">
+          Technology
+        </span>
+      </div>
+    </div>
+  );
+
   return (
     <div className="flex flex-col min-h-screen font-sans">
       {/* Header */}
@@ -27,12 +51,8 @@ const Layout: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center" onClick={closeMenu}>
-              <img 
-                src="https://vncdn.io.vn/img/sgc/logo_sgc_new_ngang.jpg" 
-                alt="SGC Technology" 
-                className="h-14 w-auto object-contain" 
-              />
+            <Link to="/" onClick={closeMenu}>
+              <Logo />
             </Link>
 
             {/* Desktop Navigation */}
@@ -144,14 +164,10 @@ const Layout: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <img 
-                  src="https://vncdn.io.vn/img/sgc/logo_sgc_new_ngang.jpg" 
-                  alt="SGC Technology" 
-                  className="h-10 w-auto object-contain" 
-                />
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+              <Link to="/">
+                <Logo />
+              </Link>
+              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mt-4">
                 {t.home.heroDescription.split(':')[0]}.
               </p>
             </div>
