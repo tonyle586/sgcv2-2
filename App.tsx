@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
+import ServiceDetailQR from './pages/ServiceDetailQR';
 import Portfolio from './pages/Portfolio';
 import Contact from './pages/Contact';
 import ThankYou from './pages/ThankYou';
@@ -70,6 +71,7 @@ const App: React.FC = () => {
             <Route index element={<><PageSEO title="Home" /><Home /></>} />
             <Route path="about" element={<><PageSEO title="About" /><About /></>} />
             <Route path="services" element={<><PageSEO title="Services" /><Services /></>} />
+            <Route path="services/qr-code" element={<><PageSEO title="Dịch vụ QR Code" /><ServiceDetailQR /></>} />
             <Route path="portfolio" element={<><PageSEO title="Portfolio" /><Portfolio /></>} />
             <Route path="contact" element={<><PageSEO title="Contact" /><Contact /></>} />
             <Route path="thank-you" element={<><PageSEO title="Success" /><ThankYou /></>} />

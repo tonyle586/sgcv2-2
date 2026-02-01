@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react';
 import { useAppContext } from '../App';
 import { CONTENT } from '../constants';
@@ -8,7 +8,20 @@ const Contact: React.FC = () => {
   const { language } = useAppContext();
   const t = CONTENT[language];
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Form State
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    const service = searchParams.get('service');
+    if (service) {
+      setMessage(language === 'vn' 
+        ? `Tôi muốn nhận tư vấn về dịch vụ: ${service}` 
+        : `I am interested in the service: ${service}`);
+    }
+  }, [searchParams, language]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,6 +130,8 @@ const Contact: React.FC = () => {
                 <textarea 
                   required
                   rows={4}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                   className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-brand-500 outline-none transition-all dark:text-white resize-none"
                 ></textarea>
               </div>
