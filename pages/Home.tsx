@@ -91,7 +91,7 @@ const Home: React.FC = () => {
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-r from-brand-600 to-purple-600 rounded-2xl opacity-20 blur-lg"></div>
               <img 
-                src="https://picsum.photos/seed/tech_office/800/600" 
+                src="https://vncdn.io.vn/img/sgc/banner-4-sgc.jpg" 
                 alt="SGC Office" 
                 className="relative rounded-2xl shadow-2xl w-full object-cover"
               />
